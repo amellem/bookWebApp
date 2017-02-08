@@ -22,7 +22,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>ID Number</th>
                         <th>Author's Name</th>
                         <th>Date Added</th>
                     </tr>
