@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     </head>
     <body style="color: lightgray">
+        <div class="container">
         <h1 style="text-align: center">List of Authors</h1>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -39,6 +40,7 @@
                     </c:forEach>
                 </tbody>
             </table>    
+        </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
