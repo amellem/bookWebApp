@@ -16,8 +16,8 @@
         <title>Authors</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     </head>
-    <body>
-        <h1>List of Authors</h1>
+    <body style="color: lightgray">
+        <h1 style="text-align: center">List of Authors</h1>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
