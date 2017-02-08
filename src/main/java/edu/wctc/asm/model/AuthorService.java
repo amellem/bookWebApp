@@ -14,8 +14,8 @@ import java.util.List;
  * @author CloudAerius
  */
 public class AuthorService {
-    
-    public List<Author> getAuthors(){
+
+    public List<Author> getAuthors() {
         return Arrays.asList(
                 new Author(100, "Mark Twain", new Date()),
                 new Author(200, "William Shakespeare", new Date()),

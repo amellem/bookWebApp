@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author CloudAerius
  */
-@WebServlet(name = "BookController", urlPatterns = {"/BookController"})
+@WebServlet(name = "AuthorController", urlPatterns = {"/AuthorController"})
 public class AuthorController extends HttpServlet {
     private static final String RESULT_PAGE = "authorList.jsp";
     private static final String HOME_PAGE = "index.html";
@@ -39,11 +39,13 @@ public class AuthorController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        AuthorService as = new AuthorService();
+        
         try{
+            AuthorService as = new AuthorService();
+            
             if(action.equals("authorList")){
                 List<Author> a = as.getAuthors();
-                request.setAttribute("a", a);
+                request.setAttribute("authors", a);
             }
         } catch (Exception e){
             request.setAttribute("errorMsg", e.getMessage());
