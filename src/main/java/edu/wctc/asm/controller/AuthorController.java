@@ -5,7 +5,10 @@
  */
 package edu.wctc.asm.controller;
 
+import edu.wctc.asm.model.Author;
+import edu.wctc.asm.model.AuthorService;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,9 +21,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author CloudAerius
  */
 @WebServlet(name = "BookController", urlPatterns = {"/BookController"})
-public class BookController extends HttpServlet {
-
-    private static final String RESULT_PAGE = "results.jsp";
+public class AuthorController extends HttpServlet {
+    private static final String RESULT_PAGE = "authorList.jsp";
+    private static final String HOME_PAGE = "index.html";
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,14 +37,17 @@ public class BookController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String action = request.getParameter("action");
         
-        
-        
-        
-        // Code
-        
-        
-        
+        AuthorService as = new AuthorService();
+        try{
+            if(action.equals("authorList")){
+                List<Author> a = as.getAuthors();
+                request.setAttribute("a", a);
+            }
+        } catch (Exception e){
+            request.setAttribute("errorMsg", e.getMessage());
+        }
         
         RequestDispatcher view =
                 request.getRequestDispatcher(RESULT_PAGE);

@@ -13,13 +13,14 @@ import java.util.List;
  *
  * @author CloudAerius
  */
-public class BookService {
+public class AuthorService {
     
     public List<Author> getAuthors(){
         return Arrays.asList(
                 new Author(100, "Mark Twain", new Date()),
-                new Author(200, "", new Date()),
-                new Author(300, "", new Date())
+                new Author(200, "William Shakespeare", new Date()),
+                new Author(300, "Ernest Hemingway", new Date()),
+                new Author(400, "Charles Dickens", new Date())
         );
     }
 }
