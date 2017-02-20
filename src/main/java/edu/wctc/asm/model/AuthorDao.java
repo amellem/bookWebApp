@@ -31,9 +31,27 @@ public class AuthorDao implements IAuthorDao {
         this.password = password;
     }
 
+    /**
+     *
+     * @param tableName
+     * @param colNames
+     * @param colValues
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     @Override
-    public List<Author> getAuthorList(String tableName, int maxRecords)
+    public void addAuthorToDb(String tableName, List<String> colNames, List colValues)
             throws ClassNotFoundException, SQLException {
+
+        db.openConnection(driverClass, url, userName, password);
+        db.createRecord(tableName, colNames, colValues);
+        db.closeConnection();
+    }
+
+    @Override
+    public List<Author> getAuthorDb(String tableName, int maxRecords)
+            throws ClassNotFoundException, SQLException {
+
         List<Author> authorList = new ArrayList<>();
         db.openConnection(driverClass, url, userName, password);
 
@@ -57,6 +75,24 @@ public class AuthorDao implements IAuthorDao {
             authorList.add(author);
         }
         return authorList;
+    }
+
+    @Override
+    public void updateAuthorDb(String tableName, List<String> colNames, List colValues, String colName, Object id)
+            throws ClassNotFoundException, SQLException {
+
+        db.openConnection(driverClass, url, userName, password);
+        db.updateRecord(tableName, colNames, colValues, colName, id);
+        db.closeConnection();
+    }
+
+    @Override
+    public void deleteAuthorFromDb(String tableName, String colName, Object id)
+            throws ClassNotFoundException, SQLException {
+
+        db.openConnection(driverClass, url, userName, password);
+        db.deleteRecordById(tableName, colName, id);
+        db.closeConnection();
     }
 
     @Override
@@ -110,9 +146,9 @@ public class AuthorDao implements IAuthorDao {
     }
 
     public static void main(String[] args) throws Exception {
-        IAuthorDao dao = new AuthorDao(new MySqlDbAccessor(),"com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin");
+        IAuthorDao dao = new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin");
 
-        List<Author> authors = dao.getAuthorList("author", 50);
+        List<Author> authors = dao.getAuthorDb("author", 50);
 
         for (Author a : authors) {
             System.out.println(a);

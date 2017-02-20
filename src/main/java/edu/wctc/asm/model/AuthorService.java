@@ -30,10 +30,28 @@ public class AuthorService {
         this.dao = dao;
     }
 
+    public void addAuthor(String tableName, List<String> colNames, List colValues)
+            throws ClassNotFoundException, SQLException {
+
+        dao.addAuthorToDb(tableName, colNames, colValues);
+    }
+
     public List<Author> getAuthors(String tableName, int maxRecords)
             throws ClassNotFoundException, SQLException {
 
-        return dao.getAuthorList(tableName, maxRecords);
+        return dao.getAuthorDb(tableName, maxRecords);
+    }
+
+    public void updateAuthor(String tableName, List<String> colNames, List colValues, String colName, Object id)
+            throws ClassNotFoundException, SQLException {
+
+        dao.updateAuthorDb(tableName, colNames, colValues, colName, id);
+    }
+
+    public void deleteAuthor(String tableName, String colName, Object id)
+            throws ClassNotFoundException, SQLException {
+
+        dao.deleteAuthorFromDb(tableName, colName, id);
     }
 
     public static void main(String[] args)
