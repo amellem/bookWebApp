@@ -5,6 +5,7 @@
  */
 package edu.wctc.asm.model;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -15,12 +16,36 @@ import java.util.List;
  */
 public class AuthorService {
 
-    public List<Author> getAuthors() {
-        return Arrays.asList(
-                new Author(100, "Mark Twain", new Date()),
-                new Author(200, "William Shakespeare", new Date()),
-                new Author(300, "Ernest Hemingway", new Date()),
-                new Author(400, "Charles Dickens", new Date())
-        );
+    private IAuthorDao dao;
+
+    public IAuthorDao getDao() {
+        return dao;
+    }
+
+    public void setDao(IAuthorDao dao) {
+        this.dao = dao;
+    }
+
+    public AuthorService(IAuthorDao dao) {
+        this.dao = dao;
+    }
+
+    public List<Author> getAuthors(String tableName, int maxRecords)
+            throws ClassNotFoundException, SQLException {
+
+        return dao.getAuthorList(tableName, maxRecords);
+    }
+
+    public static void main(String[] args)
+            throws ClassNotFoundException, SQLException {
+
+        AuthorService as = new AuthorService(
+                new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin"));
+
+        List<Author> authors = as.getAuthors("author", 50);
+
+        for (Author a : authors) {
+            System.out.println(a);
+        }
     }
 }

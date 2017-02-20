@@ -6,7 +6,9 @@
 package edu.wctc.asm.controller;
 
 import edu.wctc.asm.model.Author;
+import edu.wctc.asm.model.AuthorDao;
 import edu.wctc.asm.model.AuthorService;
+import edu.wctc.asm.model.MySqlDbAccessor;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -22,10 +24,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AuthorController", urlPatterns = {"/AuthorController"})
 public class AuthorController extends HttpServlet {
+
     private static final String RESULT_PAGE = "authorList.jsp";
     private static final String HOME_PAGE = "index.html";
-    
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,23 +40,24 @@ public class AuthorController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        
-        
-        try{
-            AuthorService as = new AuthorService();
-            
-            if(action.equals("authorList")){
-                List<Author> a = as.getAuthors();
+
+        try {
+            AuthorService as = new AuthorService(
+//                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin"));
+                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookDb", "root", "admin"));
+
+            if (action.equals("authorList")) {
+                List<Author> a = as.getAuthors("author", 50);
                 request.setAttribute("authors", a);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             request.setAttribute("errorMsg", e.getMessage());
         }
-        
-        RequestDispatcher view =
-                request.getRequestDispatcher(RESULT_PAGE);
+
+        RequestDispatcher view
+                = request.getRequestDispatcher(RESULT_PAGE);
         view.forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
