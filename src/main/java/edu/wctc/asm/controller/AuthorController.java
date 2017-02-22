@@ -10,6 +10,7 @@ import edu.wctc.asm.model.AuthorDao;
 import edu.wctc.asm.model.AuthorService;
 import edu.wctc.asm.model.MySqlDbAccessor;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,8 +26,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AuthorController", urlPatterns = {"/AuthorController"})
 public class AuthorController extends HttpServlet {
 
-    private static final String RESULT_PAGE = "authorList.jsp";
+    private String resultPage; 
     private static final String HOME_PAGE = "index.html";
+
+    private void refreshList(AuthorService as, HttpServletRequest request)
+            throws ClassNotFoundException, SQLException {
+        List<Author> a = as.getAuthors("author", 50);
+        request.setAttribute("authors", a);
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,19 +50,34 @@ public class AuthorController extends HttpServlet {
 
         try {
             AuthorService as = new AuthorService(
-//                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin"));
-                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookDb", "root", "admin"));
-
-            if (action.equals("authorList")) {
-                List<Author> a = as.getAuthors("author", 50);
-                request.setAttribute("authors", a);
+                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin"));
+//                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookdb", "root", "admin"));
+            switch (action) {
+                case "authorList":
+                    resultPage = "authorList.jsp";
+                    refreshList(as, request);
+                    break;
+                case "authorAdd":
+                    resultPage = "authorAdd.jsp";
+                    refreshList(as, request);
+                    break;
+                case "authorUpdate":
+                    resultPage = "authorUpdate.jsp";
+                    refreshList(as, request);
+                    break;
+                case "authorDelete":
+                    resultPage = "authorDelete.jsp";
+                    refreshList(as, request);
+                    break;
+                default:
+                    break;
             }
         } catch (Exception e) {
             request.setAttribute("errorMsg", e.getMessage());
         }
 
         RequestDispatcher view
-                = request.getRequestDispatcher(RESULT_PAGE);
+                = request.getRequestDispatcher(resultPage);
         view.forward(request, response);
 
     }

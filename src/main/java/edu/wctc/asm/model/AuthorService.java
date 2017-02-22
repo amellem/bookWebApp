@@ -6,6 +6,7 @@
 package edu.wctc.asm.model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +60,19 @@ public class AuthorService {
 
         AuthorService as = new AuthorService(
                 new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin"));
+//                new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookdb", "root", "admin"));
 
+        Date date = new Date();
+        List<String> colNames = new ArrayList<>();
+        colNames.add("author_name");
+        colNames.add("date_added");
+        List colValues = new ArrayList<>();
+        colValues.add("Yolandi Visser");
+        colValues.add(date);
+        
+//        as.addAuthor("author",colNames, colValues);
+//        as.updateAuthor("author", colNames, colValues, "author_id", 3);
+//        as.deleteAuthor("author", "author_id", 7);
         List<Author> authors = as.getAuthors("author", 50);
 
         for (Author a : authors) {

@@ -167,12 +167,12 @@ public class MySqlDbAccessor implements DbAccessor {
         colValues.add("Yolandi Visser");
         colValues.add(date);
         
-//        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin");
-        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookdb", "root", "admin");
+        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin");
+//        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookdb", "root", "admin");
 
 //        db.createRecord("author", colNames, colValues);
 //        db.updateRecord("author", colNames, colValues, "author_id", 3);
-        db.deleteRecordById("author", "author_id", 4);
+//        db.deleteRecordById("author", "author_id", 5);
         List<Map<String, Object>> records = db.findRecordsFor("author", 50);
 
         

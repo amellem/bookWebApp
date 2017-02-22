@@ -147,7 +147,18 @@ public class AuthorDao implements IAuthorDao {
 
     public static void main(String[] args) throws Exception {
         IAuthorDao dao = new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin");
-
+       
+        Date date = new Date();
+        List<String> colNames = new ArrayList<>();
+        colNames.add("author_name");
+        colNames.add("date_added");
+        List colValues = new ArrayList<>();
+        colValues.add("Yolandi Visser");
+        colValues.add(date);
+        
+//        dao.addAuthorToDb("author",colNames, colValues);
+//        dao.updateAuthorDb("author", colNames, colValues, "author_id", 3);
+//        dao.deleteAuthorFromDb("author", "author_id", 6);
         List<Author> authors = dao.getAuthorDb("author", 50);
 
         for (Author a : authors) {
