@@ -55,8 +55,8 @@ public class AuthorController extends HttpServlet {
 
         try {
             AuthorService as = new AuthorService(
-                    //                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin"));
-                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookdb", "root", "admin"));
+                                        new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin"));
+//                    new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/bookdb", "root", "admin"));
 
             switch (action) {
                 case "authorList":
