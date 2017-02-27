@@ -45,6 +45,7 @@
                 <a style="margin-right: 2em;" class="btn btn-outline-primary" href="AuthorController?action=authorAdd" role="button">Add</a>
                 <a style="margin-right: 2em;" class="btn btn-outline-primary" href="AuthorController?action=authorUpdate" role="button">Update</a>
                 <a style="margin-right: 2em;" class="btn btn-outline-primary" href="AuthorController?action=authorDelete" role="button">Delete</a>
+                <a style="margin-right: 2em;" class="btn btn-outline-primary" href="index.html" role="button">Home</a>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
