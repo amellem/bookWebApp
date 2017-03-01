@@ -21,7 +21,8 @@
             <form name="addAuthor" class="form-horizontal" method="POST" action="AuthorController?action=confirmAdd">
                 <div class="form-group">
                     <div class="col-sm-10">
-                        <input type="text" class="form-control col-md-4" id="authorName" name="authorName" placeholder="Author Name">
+                        <input type="text" class="form-control col-md-4" id="authorName" name="authorName" placeholder="Author Name" required="true"
+                               oninvalid="this.setCustomValidity('Enter an Author name, yo!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
                 <div class="form-group">

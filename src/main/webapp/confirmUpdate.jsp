@@ -31,7 +31,8 @@
                                     <input type="text" name="authorId" value="${authorId}" readonly="readonly">
                                 </td>
                                 <td>
-                                    <input type="text" name="authorName" placeholder="${authorName}">
+                                    <input type="text" name="authorName" placeholder="${authorName}" required="true"
+                                           oninvalid="this.setCustomValidity('Enter an Author name, yo!')" oninput="setCustomValidity('')">
                                 </td>
                         </tr>
                         </tbody>

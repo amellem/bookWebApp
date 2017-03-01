@@ -35,7 +35,7 @@
                             <c:forEach var="a" items="${authors}">
                                 <tr>
                                     <td>
-                                        <input type="radio" id="selectedAuthor" name="selectedAuthor" value="${a.authorId}"><c:out value="${a.authorId}"/>
+                                        <input type="radio" id="selectedAuthor" name="selectedAuthor" value="${a.authorId}" checked="checked"><c:out value="${a.authorId}"/>
                                     </td>
                                     <td>
                                         <c:out value="${a.authorName}"/>

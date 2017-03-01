@@ -10,25 +10,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.sql.DataSource;
 
 /**
  *
  * @author Aerius
  */
-public class AuthorDao implements IAuthorDao {
+public class ConnPoolAuthorDao implements IAuthorDao {
 
+    private final DataSource ds;
     private DbAccessor db;
-    private String driverClass;
-    private String url;
-    private String userName;
-    private String password;
+    
 
-    public AuthorDao(DbAccessor db, String driverClass, String url, String userName, String password) {
+    public ConnPoolAuthorDao(DataSource ds, DbAccessor db) {
+        this.ds = ds;
         this.db = db;
-        this.driverClass = driverClass;
-        this.url = url;
-        this.userName = userName;
-        this.password = password;
     }
 
     /**
@@ -43,7 +39,7 @@ public class AuthorDao implements IAuthorDao {
     public void addAuthorToDb(String tableName, List<String> colNames, List colValues)
             throws ClassNotFoundException, SQLException {
 
-        db.openConnection(driverClass, url, userName, password);
+        db.openConnection(ds);
         db.createRecord(tableName, colNames, colValues);
         db.closeConnection();
     }
@@ -53,7 +49,7 @@ public class AuthorDao implements IAuthorDao {
             throws ClassNotFoundException, SQLException {
 
         List<Author> authorList = new ArrayList<>();
-        db.openConnection(driverClass, url, userName, password);
+        db.openConnection(ds);
 
         List<Map<String, Object>> rawData = db.findRecordsFor(tableName, maxRecords);
         db.closeConnection();
@@ -81,7 +77,7 @@ public class AuthorDao implements IAuthorDao {
     public void updateAuthorDb(String tableName, List<String> colNames, List colValues, String colName, Object id)
             throws ClassNotFoundException, SQLException {
 
-        db.openConnection(driverClass, url, userName, password);
+        db.openConnection(ds);
         db.updateRecord(tableName, colNames, colValues, colName, id);
         db.closeConnection();
     }
@@ -90,81 +86,40 @@ public class AuthorDao implements IAuthorDao {
     public void deleteAuthorFromDb(String tableName, String colName, Object id)
             throws ClassNotFoundException, SQLException {
 
-        db.openConnection(driverClass, url, userName, password);
+        db.openConnection(ds);
         db.deleteRecordById(tableName, colName, id);
         db.closeConnection();
     }
 
-    
-    public String getDriverClass() {
-        return driverClass;
-    }
-
-   
-    public void setDriverClass(String driverClass) {
-        this.driverClass = driverClass;
-    }
-
- 
-    public String getUrl() {
-        return url;
-    }
-
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-  
-    public String getUserName() {
-        return userName;
-    }
-
-  
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-  
-    public String getPassword() {
-        return password;
-    }
-
-   
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
- 
     @Override
     public DbAccessor getDb() {
         return db;
     }
 
-   
+ 
     public void setDb(DbAccessor db) {
         this.db = db;
     }
 
     public static void main(String[] args) throws Exception {
-        IAuthorDao dao = new AuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin");
-       
-        Date date = new Date();
-        List<String> colNames = new ArrayList<>();
-        colNames.add("author_name");
-        colNames.add("date_added");
-        List colValues = new ArrayList<>();
-        colValues.add("Yolandi Visser");
-        colValues.add(date);
-        
-//        dao.addAuthorToDb("author",colNames, colValues);
-//        dao.updateAuthorDb("author", colNames, colValues, "author_id", 3);
-//        dao.deleteAuthorFromDb("author", "author_id", 6);
-        List<Author> authors = dao.getAuthorDb("author", 50);
-
-        for (Author a : authors) {
-            System.out.println(a);
-        }
+//        IAuthorDao dao = new ConnPoolAuthorDao(new MySqlDbAccessor(), "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/book", "root", "admin");
+//       
+//        Date date = new Date();
+//        List<String> colNames = new ArrayList<>();
+//        colNames.add("author_name");
+//        colNames.add("date_added");
+//        List colValues = new ArrayList<>();
+//        colValues.add("Yolandi Visser");
+//        colValues.add(date);
+//        
+////        dao.addAuthorToDb("author",colNames, colValues);
+////        dao.updateAuthorDb("author", colNames, colValues, "author_id", 3);
+////        dao.deleteAuthorFromDb("author", "author_id", 6);
+//        List<Author> authors = dao.getAuthorDb("author", 50);
+//
+//        for (Author a : authors) {
+//            System.out.println(a);
+//        }
     }
 
 }

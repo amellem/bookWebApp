@@ -28,22 +28,6 @@ public interface IAuthorDao {
 
     public abstract DbAccessor getDb();
 
-    public abstract String getDriverClass();
-
-    public abstract String getPassword();
-
-    public abstract String getUrl();
-
-    public abstract String getUserName();
-
-    public abstract void setDb(DbAccessor db);
-
-    public abstract void setDriverClass(String driverClass);
-
-    public abstract void setPassword(String password);
-
-    public abstract void setUrl(String url);
-
-    public abstract void setUserName(String userName);
+    
 
 }
