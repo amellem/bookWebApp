@@ -149,13 +149,14 @@ public class AuthorController extends HttpServlet {
         }
 
         RequestDispatcher view
-                = request.getRequestDispatcher(resultPage);
+                = request.getRequestDispatcher(response.encodeRedirectURL(resultPage));
 
         view.forward(request, response);
 
     }
 
-    private AuthorService injectDependenciesAndGetAuthorService() throws Exception {
+    private AuthorService injectDependenciesAndGetAuthorService() 
+            throws Exception {
         // Use Liskov Substitution Principle and Java Reflection to
         // instantiate the chosen DBStrategy based on the class name retrieved
         // from web.xml

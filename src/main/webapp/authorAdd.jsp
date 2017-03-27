@@ -4,21 +4,24 @@
     Author     : Aerius
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${pageContext.request.locale}" scope="session" />
+
+<fmt:setBundle basename="edu.wctc.asm.i18n.messages" />
+
 <!DOCTYPE html>
-<html>
+<html lang="${language}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Add Author</title>
+        <title><fmt:message key="page.header.title.add"/></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     </head>
     <body>
         <div class="container">
             <h1 style="text-align: center">Add Author</h1>
-            <form name="addAuthor" class="form-horizontal" method="POST" action="AuthorController?action=confirmAdd">
+            <form name="addAuthor" class="form-horizontal" method="POST" action="<%= response.encodeURL("AuthorController?action=confirmAdd")%>">
                 <div class="form-group">
                     <div class="col-sm-10">
                         <input type="text" class="form-control col-md-4" id="authorName" name="authorName" placeholder="Author Name" required="true"
