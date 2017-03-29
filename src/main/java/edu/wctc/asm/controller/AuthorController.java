@@ -5,12 +5,9 @@
  */
 package edu.wctc.asm.controller;
 
+import edu.wctc.asm.model.AbstractFacade;
 import edu.wctc.asm.model.Author;
-import edu.wctc.asm.model.AuthorDao;
-import edu.wctc.asm.model.AuthorService;
-import edu.wctc.asm.model.DbAccessor;
-import edu.wctc.asm.model.IAuthorDao;
-import edu.wctc.asm.model.MySqlDbAccessor;
+import edu.wctc.asm.model.AuthorFacade;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.sql.SQLException;
@@ -18,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.ejb.EJB;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.RequestDispatcher;
@@ -36,22 +34,20 @@ import javax.sql.DataSource;
 
 public class AuthorController extends HttpServlet {
 
-    private String dbStrategyClassName;
-    private String daoClassName;
+    @EJB
+    private AuthorFacade authorFacade;
+
+    @EJB
+    private AuthorFacade authorService;
     private String jndiName;
-    // Get init params from web.xml
-    private String driverClass;
-    private String url;
-    private String userName;
-    private String password;
 
     private String resultPage;
     private static final String HOME_PAGE = "index.html";
     private String authorId;
 
-    private void refreshList(AuthorService as, HttpServletRequest request)
+    private void refreshList(AuthorFacade as, HttpServletRequest request)
             throws ClassNotFoundException, SQLException {
-        List<Author> a = as.getAuthors("author", 50);
+        List<Author> a = as.findAll();
         request.setAttribute("authors", a);
     }
 
@@ -70,44 +66,35 @@ public class AuthorController extends HttpServlet {
         authorId = request.getParameter("selectedAuthor");
 
         try {
-            AuthorService as = injectDependenciesAndGetAuthorService();
 
             switch (action) {
                 case "authorList":
                     resultPage = "authorList.jsp";
-                    refreshList(as, request);
+                    refreshList(authorService, request);
                     break;
-                    
+
                 case "authorAdd":
                     resultPage = "authorAdd.jsp";
-                    refreshList(as, request);
+                    refreshList(authorService, request);
                     break;
-                    
+
                 case "confirmAdd":
                     resultPage = "authorList.jsp";
                     if (!request.getParameter("authorName").isEmpty()) {
-                        Date date = new Date();
-                        List<String> colNames = new ArrayList<>();
-                        colNames.add("author_name");
-                        colNames.add("date_added");
-                        List colValues = new ArrayList<>();
-                        colValues.add(request.getParameter("authorName"));
-                        colValues.add(date);
-                        as.addAuthor("author", colNames, colValues);
+                        authorService.addNew(request.getParameter("authorName"));
                     }
-                    refreshList(as, request);
+                    refreshList(authorService, request);
                     break;
-                    
+
                 case "authorUpdate":
                     resultPage = "authorUpdate.jsp";
-                    refreshList(as, request);
+                    refreshList(authorService, request);
                     break;
-                    
+
                 case "authorToUpdate":
                     resultPage = "confirmUpdate.jsp";
-
                     if (authorId != null) {
-                        List<Author> authors = as.getAuthors("author", 50);
+                        List<Author> authors = authorService.findAll();
                         for (Author a : authors) {
                             if (Objects.equals(a.getAuthorId(), Integer.valueOf(authorId))) {
                                 request.setAttribute("authorId", a.getAuthorId());
@@ -117,30 +104,24 @@ public class AuthorController extends HttpServlet {
                         }
                     }
                     break;
-                    
+
                 case "updateConfirmed":
                     resultPage = "authorList.jsp";
-                    List<String> colNames = new ArrayList<>();
-                    colNames.add("author_name");
-                    List colValues = new ArrayList<>();
-                    colValues.add(request.getParameter("authorName"));
-
-                    as.updateAuthor("author", colNames, colValues, "author_id", request.getParameter("authorId"));
-
-                    refreshList(as, request);
+                    authorService.update(request.getParameter("authorId"), request.getParameter("authorName"));
+                    refreshList(authorService, request);
                     break;
-                    
+
                 case "authorDelete":
                     resultPage = "authorDelete.jsp";
-                    refreshList(as, request);
+                    refreshList(authorService, request);
                     break;
-                    
+
                 case "authorToDelete":
                     resultPage = "authorList.jsp";
-                    as.deleteAuthor("author", "author_id", request.getParameter("authorId"));
-                    refreshList(as, request);
+                    authorService.deleteById(request.getParameter("authorId"));
+                    refreshList(authorService, request);
                     break;
-                    
+
                 default:
                     break;
             }
@@ -155,67 +136,6 @@ public class AuthorController extends HttpServlet {
 
     }
 
-    private AuthorService injectDependenciesAndGetAuthorService() 
-            throws Exception {
-        // Use Liskov Substitution Principle and Java Reflection to
-        // instantiate the chosen DBStrategy based on the class name retrieved
-        // from web.xml
-        Class dbClass = Class.forName(dbStrategyClassName);
-        // Use Java reflection to instanntiate the DBStrategy object
-        // Note that DBStrategy classes have no constructor params
-        DbAccessor db = (DbAccessor) dbClass.newInstance();
-
-        // Use Liskov Substitution Principle and Java Reflection to
-        // instantiate the chosen DAO based on the class name retrieved above.
-        // This one is trickier because the available DAO classes have
-        // different constructor params
-        IAuthorDao authorDao = null;
-        Class daoClass = Class.forName(daoClassName);
-        Constructor constructor = null;
-        
-        // This will only work for the non-pooled AuthorDao
-        try {
-            constructor = daoClass.getConstructor(new Class[]{
-                DbAccessor.class, String.class, String.class, String.class, String.class
-            });
-        } catch(NoSuchMethodException nsme) {
-            // do nothing, the exception means that there is no such constructor,
-            // so code will continue executing below
-        }
-
-        // constructor will be null if using connectin pool dao because the
-        // constructor has a different number and type of arguments
-        
-        if (constructor != null) {
-            // conn pool NOT used so constructor has these arguments
-            Object[] constructorArgs = new Object[]{
-                db, driverClass, url, userName, password
-            };
-            authorDao = (IAuthorDao) constructor
-                    .newInstance(constructorArgs);
-
-        } else {
-            /*
-             Here's what the connection pool version looks like. First
-             we lookup the JNDI name of the Glassfish connection pool
-             and then we use Java Refletion to create the needed
-             objects based on the servlet init params
-             */
-            Context ctx = new InitialContext();
-            DataSource ds = (DataSource) ctx.lookup(jndiName);
-            constructor = daoClass.getConstructor(new Class[]{
-                DataSource.class, DbAccessor.class
-            });
-            Object[] constructorArgs = new Object[]{
-                ds, db
-            };
-
-            authorDao = (IAuthorDao) constructor
-                    .newInstance(constructorArgs);
-        }
-        
-        return new AuthorService(authorDao);
-    }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -262,14 +182,6 @@ public class AuthorController extends HttpServlet {
     @Override
     public void init()
             throws ServletException {
-        // Get init params from web.xml
-        driverClass = getServletContext().getInitParameter("driverClass");
-        url = getServletContext().getInitParameter("url");
-        userName = getServletContext().getInitParameter("username");
-        password = getServletContext().getInitParameter("password");
-        dbStrategyClassName = getServletContext().getInitParameter("dbStrategy");
-        daoClassName = getServletContext().getInitParameter("authorDao");
-        jndiName = getServletContext().getInitParameter("connPoolName");
     }
 
 }
