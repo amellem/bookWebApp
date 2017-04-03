@@ -1,30 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.wctc.asm.controller;
 
-import edu.wctc.asm.model.AbstractFacade;
 import edu.wctc.asm.model.Author;
 import edu.wctc.asm.model.AuthorFacade;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.ejb.EJB;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 /**
  *
@@ -34,15 +22,11 @@ import javax.sql.DataSource;
 
 public class AuthorController extends HttpServlet {
 
-    @EJB
-    private AuthorFacade authorFacade;
 
     @EJB
     private AuthorFacade authorService;
-    private String jndiName;
 
     private String resultPage;
-    private static final String HOME_PAGE = "index.html";
     private String authorId;
 
     private void refreshList(AuthorFacade as, HttpServletRequest request)
