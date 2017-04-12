@@ -1,7 +1,13 @@
 package edu.wctc.asm.controller;
 
+import edu.wctc.asm.model.Author;
+import edu.wctc.asm.model.AuthorFacade;
+import edu.wctc.asm.model.Book;
+import edu.wctc.asm.model.BookFacade;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,8 +22,25 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "BookController", urlPatterns = {"/BookController"})
 public class BookController extends HttpServlet {
 
+    @EJB
+    private BookFacade bookService;
+    
+    @EJB
+    private AuthorFacade authorService;
+    
     private String resultPage;
     
+    private void refreshList(BookFacade bs, HttpServletRequest request)
+            throws ClassNotFoundException, SQLException {
+        List<Book> b = bs.findAll();
+        request.setAttribute("books", b);
+    }
+    
+    private void authorList(AuthorFacade as, HttpServletRequest request)
+            throws ClassNotFoundException, SQLException {
+        List<Author> a = as.findAll();
+        request.setAttribute("authors", a);
+    }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,6 +54,33 @@ public class BookController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        String action = request.getParameter("action");
+        
+        try {
+            
+            switch(action){
+                
+                case "bookIndex":
+                    resultPage = "bookList.jsp";
+                    refreshList(bookService, request);
+                    break;
+                    
+                case "bookAdd":
+                    resultPage = "bookAdd.jsp";
+                    authorList(authorService, request);
+                    break;
+                    
+                case "bookToAdd":
+                    resultPage = "bookToAdd.jsp";
+                    refreshList(bookService, request);
+                    break;
+                    
+                default :
+                    break;
+            }
+        } catch (Exception e) {
+            request.setAttribute("errorMsg", e.getMessage());
+        }
         
         RequestDispatcher view
                 = request.getRequestDispatcher(response.encodeRedirectURL(resultPage));
@@ -52,27 +102,6 @@ public class BookController extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        String action = request.getParameter("action");
-        
-        try {
-            
-            switch(action){
-                
-                case "bookIndex" :
-                    resultPage = "bookIndex.jsp";
-                    break;
-                    
-                default :
-                    break;
-            }
-        } catch (Exception e) {
-            request.setAttribute("errorMsg", e.getMessage());
-        }
-        
-        RequestDispatcher view
-                = request.getRequestDispatcher(response.encodeRedirectURL(resultPage));
-
-        view.forward(request, response);
     }
 
    

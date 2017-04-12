@@ -1,0 +1,10 @@
+BookFacade
+
+@EJB
+AuthorFacade authorService;
+
+Author author = authorService.find(new Integer(authorId));
+Set<Book> bookSet = author.getBookSet();
+Book book = new Book();
+book.setTitle(title);
+book.setIsbn(isbn);
