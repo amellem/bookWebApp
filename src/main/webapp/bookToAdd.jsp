@@ -19,20 +19,36 @@
     <body>
         <div class="container">
             <h1 style="text-align: center">Add Book</h1>
-            <form name="addBook" class="form-horizontal" method="POST" action="<%= response.encodeURL("AuthorController?action=confirmAdd")%>">
-                <div class="form-group">
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control col-md-4" id="bookTitle" name="bookTitle" placeholder="Book Title" required="true"
-                               oninvalid="this.setCustomValidity('Enter a Book Title, yo!')" oninput="setCustomValidity('')">
-                    </div>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control col-md-4" id="isbn" name="isbn" placeholder="ISBN" required="true"
-                               oninvalid="this.setCustomValidity('Enter an ISBN, yo!')" oninput="setCustomValidity('')">
-                    </div>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control col-md-4" id="authorName" name="authorName" placeholder="Author Name" required="true"
-                               oninvalid="this.setCustomValidity('Enter an author name, yo!')" oninput="setCustomValidity('')">
-                    </div>
+            <form name="addBook" class="form-horizontal" method="POST" action="<%= response.encodeURL("BookController?action=confirmAdd")%>">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th>ISBN</th>
+                                <th>Author</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" id="bookTitle" name="bookTitle" placeholder="Book Title" required="true"
+                                           oninvalid="this.setCustomValidity('Enter a Book Title, yo!')" oninput="setCustomValidity('')">
+                                </td>
+                                <td>
+
+                                    <input type="text" id="isbn" name="isbn" placeholder="ISBN" required="true"
+                                           oninvalid="this.setCustomValidity('Enter an ISBN, yo!')" oninput="setCustomValidity('')">
+                                </td>
+                                <td>
+                                    <input type="text" id="authorName" name="authorName" value="${authorName}"  readonly="readonly">
+                                </td>
+                                <td>
+                                    <input type="hidden" id="selectedAuthor" name="selectedAuthor" value="${selectedAuthor}"  readonly="readonly">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

@@ -29,35 +29,34 @@ public class AuthorFacade extends AbstractFacade<Author> {
     public AuthorFacade() {
         super(Author.class);
     }
-    
-    public int deleteById(String id){
+
+    public int deleteById(String id) {
         Integer iId = Integer.parseInt(id);
         String jpql = "delete from Author a where a.authorId = :id";
         Query q = this.getEntityManager().createQuery(jpql);
         q.setParameter("id", iId);
         return q.executeUpdate();
     }
-    
-    public void addNew(String name){
+
+    public void addNew(String name) {
         Author a = new Author();
         a.setAuthorName(name);
         Date createDate = new Date();
         a.setDateAdded(createDate);
         this.create(a);
     }
-    
-    public void update(String id, String name){
+
+    public void update(String id, String name) {
         Author a = this.find(Integer.parseInt(id));
         a.setAuthorName(name);
         this.edit(a);
     }
-    
-//    public void addOrUpdate(String id, String name){
-//        
-//        if(id == null) || id.equals("0"){
-//        //new record
-//        }else{
-//            //updated record
-//            }
-//    }
+
+    public Author findAuthorById(String id) {
+        Integer iId = Integer.parseInt(id);
+        String jpql = "Select a from Author a where a.authorId = :id";
+        Query q = this.getEntityManager().createQuery(jpql);
+        q.setParameter("id", iId);
+        return (Author) q.getSingleResult();
+    }
 }

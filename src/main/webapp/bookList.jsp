@@ -43,8 +43,8 @@
             <div id="buttonContainer">
                 <a style="margin-right: 2em;" class="btn btn-outline-primary" href="index.html" role="button">Home</a>
                 <a style="margin-right: 2em;" class="btn btn-outline-primary" href="BookController?action=bookAdd" role="button">Add</a>
-                <a style="margin-right: 2em;" class="btn btn-outline-primary" href="index.html" role="button">Update</a>
-                <a style="margin-right: 2em;" class="btn btn-outline-primary" href="index.html" role="button">Delete</a>
+                <a style="margin-right: 2em;" class="btn btn-outline-primary" href="BookController?action=bookUpdate" role="button">Update</a>
+                <a style="margin-right: 2em;" class="btn btn-outline-primary" href="BookController?action=bookDelete" role="button">Delete</a>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>

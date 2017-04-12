@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Author.findByDateAdded", query = "SELECT a FROM Author a WHERE a.dateAdded = :dateAdded")})
 public class Author implements Serializable {
 
-    @OneToMany(mappedBy = "authorId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "authorEntity", cascade = CascadeType.ALL)
     private Set<Book> bookSet;
 
     private static final long serialVersionUID = 1L;

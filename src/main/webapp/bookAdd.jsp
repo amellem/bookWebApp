@@ -33,7 +33,7 @@
                         <tbody>
                             <c:forEach var="a" items="${authors}">
                                 <tr>
-                                    <td><input type="radio" name="authorId" value="${a.authorId}"> ${a.authorId}</td>
+                                    <td><input type="radio" name="selectedAuthor" value="${a.authorId}"> ${a.authorId}</td>
                                     <td>${a.authorName}</td>
                                     <td>
                                         <fmt:formatDate pattern="M/d/yyyy" value="${a.dateAdded}"/>
@@ -43,6 +43,7 @@
                         </tbody>
                     </table> 
                     <button class="btn btn-outline-primary" role="submit">Add Book</button>
+                    <a style="margin-left: 2em;" class="btn btn-outline-primary" href="BookController?action=bookIndex" role="button">Cancel</a>
                 </form>
             </div>
         </div>
