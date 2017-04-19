@@ -1,4 +1,4 @@
-package edu.wctc.asm.model;
+package edu.wctc.asm.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -43,7 +43,7 @@ public class Book implements Serializable {
     @Column(name = "isbn")
     private String isbn;
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Author authorEntity;
 
     public Book() {
@@ -107,7 +107,7 @@ public class Book implements Serializable {
 
     @Override
     public String toString() {
-        return "edu.wctc.asm.model.Book[ bookId=" + bookId + " ]";
+        return "bookId";
     }
     
 }

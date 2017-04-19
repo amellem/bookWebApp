@@ -1,5 +1,5 @@
 
-package edu.wctc.asm.model;
+package edu.wctc.asm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -102,7 +102,7 @@ public class Author implements Serializable {
 
     @Override
     public String toString() {
-        return "edu.wctc.asm.model.Author[ authorId=" + authorId + " ]";
+        return "authorId";
     }
 
     @XmlTransient

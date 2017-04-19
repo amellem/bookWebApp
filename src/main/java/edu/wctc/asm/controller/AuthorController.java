@@ -1,35 +1,34 @@
 package edu.wctc.asm.controller;
 
-import edu.wctc.asm.model.Author;
-import edu.wctc.asm.model.AuthorFacade;
+import edu.wctc.asm.entity.Author;
+import edu.wctc.asm.service.AuthorService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
-import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  *
  * @author CloudAerius
  */
 @WebServlet(name = "AuthorController", urlPatterns = {"/AuthorController"})
-
 public class AuthorController extends HttpServlet {
 
-
-    @EJB
-    private AuthorFacade authorService;
+    private AuthorService authorService;
 
     private String resultPage;
     private String authorId;
 
-    private void refreshList(AuthorFacade as, HttpServletRequest request)
+    private void refreshList(AuthorService as, HttpServletRequest request)
             throws ClassNotFoundException, SQLException {
         List<Author> a = as.findAll();
         request.setAttribute("authors", a);
@@ -102,7 +101,7 @@ public class AuthorController extends HttpServlet {
 
                 case "authorToDelete":
                     resultPage = "authorList.jsp";
-                    authorService.deleteById(request.getParameter("authorId"));
+                    authorService.remove(authorService.findById(request.getParameter("authorId")));
                     refreshList(authorService, request);
                     break;
 
@@ -166,6 +165,12 @@ public class AuthorController extends HttpServlet {
     @Override
     public void init()
             throws ServletException {
+        ServletContext sctx = getServletContext();
+        WebApplicationContext ctx
+                = WebApplicationContextUtils
+                        .getWebApplicationContext(sctx);
+        AuthorService authorService
+                = (AuthorService) ctx.getBean("authorService");
     }
 
 }

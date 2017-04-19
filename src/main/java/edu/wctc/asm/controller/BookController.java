@@ -1,14 +1,13 @@
 package edu.wctc.asm.controller;
 
-import edu.wctc.asm.model.Author;
-import edu.wctc.asm.model.AuthorFacade;
-import edu.wctc.asm.model.Book;
-import edu.wctc.asm.model.BookFacade;
+import edu.wctc.asm.entity.Author;
+import edu.wctc.asm.entity.Book;
+import edu.wctc.asm.service.AuthorService;
+import edu.wctc.asm.service.BookService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
-import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,23 +22,20 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "BookController", urlPatterns = {"/BookController"})
 public class BookController extends HttpServlet {
 
-    @EJB
-    private BookFacade bookService;
-
-    @EJB
-    private AuthorFacade authorService;
+    private AuthorService authorService;
+    private BookService bookService;
 
     private String resultPage;
     private String authorId;
     private String bookId;
 
-    private void refreshList(BookFacade bs, HttpServletRequest request)
+    private void refreshList(BookService bs, HttpServletRequest request)
             throws ClassNotFoundException, SQLException {
         List<Book> b = bs.findAll();
         request.setAttribute("books", b);
     }
 
-    private void authorList(AuthorFacade as, HttpServletRequest request)
+    private void authorList(AuthorService as, HttpServletRequest request)
             throws ClassNotFoundException, SQLException {
         List<Author> a = as.findAll();
         request.setAttribute("authors", a);
@@ -130,7 +126,7 @@ public class BookController extends HttpServlet {
                     
                 case "bookToDelete":
                     resultPage = "bookList.jsp";
-                    bookService.deleteById(request.getParameter("bookId"));
+                    bookService.remove(bookService.findById(request.getParameter("bookId")));
                     refreshList(bookService, request);
                     break;
 
