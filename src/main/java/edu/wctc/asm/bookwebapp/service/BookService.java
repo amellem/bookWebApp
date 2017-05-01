@@ -1,9 +1,9 @@
-package edu.wctc.asm.service;
+package edu.wctc.asm.bookwebapp.service;
 
-import edu.wctc.asm.entity.Author;
-import edu.wctc.asm.entity.Book;
-import edu.wctc.asm.repository.AuthorRepository;
-import edu.wctc.asm.repository.BookRepository;
+import edu.wctc.asm.bookwebapp.entity.Author;
+import edu.wctc.asm.bookwebapp.entity.Book;
+import edu.wctc.asm.bookwebapp.repository.AuthorRepository;
+import edu.wctc.asm.bookwebapp.repository.BookRepository;
 import java.util.List;
 import javax.inject.Inject;
 import org.slf4j.Logger;

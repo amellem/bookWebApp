@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.wctc.asm.repository;
+package edu.wctc.asm.bookwebapp.repository;
 
-import edu.wctc.asm.entity.Book;
+import edu.wctc.asm.bookwebapp.entity.Book;
 import java.io.Serializable;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

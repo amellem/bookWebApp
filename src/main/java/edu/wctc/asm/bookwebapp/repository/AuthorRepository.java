@@ -1,6 +1,6 @@
-package edu.wctc.asm.repository;
+package edu.wctc.asm.bookwebapp.repository;
 
-import edu.wctc.asm.entity.Author;
+import edu.wctc.asm.bookwebapp.entity.Author;
 import java.io.Serializable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

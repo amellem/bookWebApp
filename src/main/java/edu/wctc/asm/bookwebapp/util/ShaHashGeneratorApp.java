@@ -1,4 +1,4 @@
-package edu.wctc.asm.util;
+package edu.wctc.asm.bookwebapp.util;
 
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 

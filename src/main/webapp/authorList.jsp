@@ -31,8 +31,8 @@
                     <tbody>
                         <c:forEach var="a" items="${authors}">
                             <tr>
-                                <td>${a.authorId}</td>
-                                <td>${a.authorName}</td>
+                                <td><c:out value="${a.authorId}"/></td>
+                                <td><c:out value="${a.authorName}"/></td>
                                 <td>
                                     <fmt:formatDate pattern="M/d/yyyy" value="${a.dateAdded}"/>
                                 </td>

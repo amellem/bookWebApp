@@ -1,4 +1,4 @@
-package edu.wctc.asm.entity;
+package edu.wctc.asm.bookwebapp.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;

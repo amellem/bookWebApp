@@ -1,9 +1,9 @@
-package edu.wctc.asm.controller;
+package edu.wctc.asm.bookwebapp.controller;
 
-import edu.wctc.asm.entity.Author;
-import edu.wctc.asm.entity.Book;
-import edu.wctc.asm.service.AuthorService;
-import edu.wctc.asm.service.BookService;
+import edu.wctc.asm.bookwebapp.entity.Author;
+import edu.wctc.asm.bookwebapp.entity.Book;
+import edu.wctc.asm.bookwebapp.service.AuthorService;
+import edu.wctc.asm.bookwebapp.service.BookService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
